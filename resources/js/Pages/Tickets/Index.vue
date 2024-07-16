@@ -10,15 +10,19 @@ const props = defineProps({
     tickets: Array,
 })
 
+const priorities = inject('ticketPriorities');
+// contains null for filters
 const allPriorities = [
-    {value: null, title: 'Empty'},
+    {value: null, title: 'Not Selected'},
     {value: 'low', title: 'Low'},
     {value: 'medium', title: 'Medium'},
     {value: 'high', title: 'High'},
 ]
 
+const statuses = inject('ticketStatuses');
+// contains null for filters
 const allStatus = [
-    {value: null, title: 'Empty'},
+    {value: null, title: 'Not Selected'},
     {value: 'open', title: 'Open'},
     {value: 'in_progress', title: 'In Progress'},
     {value: 'closed', title: 'Closed'},
@@ -141,8 +145,8 @@ const paginatedTickets = computed(() => {
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ Datetime && new Datetime(ticket.created_at) }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-100">{{ ticket.title }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ ticket.user.name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ ticket.priority }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ ticket.status }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ priorities[ticket.priority] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ statuses[ticket.status] }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                             <Link :href="route('tickets.show', [ticket.id])">
                                 View

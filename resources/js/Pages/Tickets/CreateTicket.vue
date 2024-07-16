@@ -1,24 +1,16 @@
 <script setup>
+import {inject} from "vue";
 import { useForm } from "@inertiajs/vue3";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
-const priorities = {
-    low: 'Low',
-    medium: 'Medium',
-    high: 'High',
-};
-
-const statuses = {
-    open: 'Open',
-    inProgress: 'In Progress',
-    closed: 'Closed',
-};
+const priorities = inject('ticketPriorities');
+const statuses = inject('ticketStatuses');
 
 const form = useForm({
     title: '',
     description: '',
-    priority: 'low',
-    status: 'open',
+    priority: Object.keys(priorities)[0],
+    status: Object.keys(statuses)[0],
 });
 
 function submit() {
