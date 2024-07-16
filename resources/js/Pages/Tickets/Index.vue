@@ -18,7 +18,7 @@ const filters = ref({
     title: '',
     description: '',
     userName: '',
-    userEmail: null,
+    userEmail: '',
     dateStart: null,
     dateEnd: null,
     priority: null,
