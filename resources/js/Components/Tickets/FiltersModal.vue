@@ -3,6 +3,7 @@ import Modal from '@/Components/Modal.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
+import { DatePicker } from 'v-calendar';
 
 const props = defineProps({
     filters: { required: true, type: Object }
@@ -25,6 +26,7 @@ function reset(){
         :show="filters.show"
         @close="filters.show = false"
     >
+        <pre class="text-white">{{filters}}</pre>
         <div class="p-4 flex justify-between items-center text-white">
             <div>
                 <h3 class="text-3xl">Filters</h3>
@@ -43,7 +45,7 @@ function reset(){
             <div class="col-span-6 md:col-span-3">
                 <InputLabel value="Content" class="mb-1" />
                 <TextInput
-                    v-model="filters.content"
+                    v-model="filters.description"
                     class="w-full"
                 />
             </div>
@@ -65,11 +67,37 @@ function reset(){
             </div>
             <div class="col-span-6 md:col-span-3">
                 <InputLabel value="Start From" class="mb-1" />
-
+                <DatePicker
+                    v-model="filters.date[0]"
+                    mode="date"
+                    :popover="{visibility: 'click'}"
+                >
+                    <template #default="{ inputValue, inputEvents }">
+                        <TextInput
+                            :value="inputValue"
+                            v-on="inputEvents"
+                            readonly
+                            class="w-full"
+                        />
+                    </template>
+                </DatePicker>
             </div>
             <div class="col-span-6 md:col-span-3">
                 <InputLabel value="Until" class="mb-1" />
-
+                <DatePicker
+                    v-model="filters.date[1]"
+                    mode="date"
+                    readonly
+                    :popover="{visibility: 'click'}"
+                >
+                    <template #default="{ inputValue, inputEvents }">
+                        <TextInput
+                            :value="inputValue"
+                            v-on="inputEvents"
+                            class="w-full"
+                        />
+                    </template>
+                </DatePicker>
             </div>
         </form>
         <div class="w-full flex justify-center items-center p-4">
@@ -78,3 +106,8 @@ function reset(){
     </Modal>
 </template>
 
+<style>
+@import 'v-calendar/dist/style.css';
+</style>
+
+<style scoped></style>
