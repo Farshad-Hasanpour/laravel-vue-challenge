@@ -1,8 +1,9 @@
 <script setup>
-import Pagination from '@/Components/Pagination.vue'
-import {computed, ref, inject} from "vue";
+import {computed, ref, inject, defineAsyncComponent} from "vue";
 import { Link } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import Pagination from '@/Components/Pagination.vue'
+const FiltersModal = defineAsyncComponent(() => import("@/Components/tickets/FiltersModal.vue"));
 
 const props = defineProps({
     tickets: Array,
@@ -11,6 +12,16 @@ const props = defineProps({
 const Datetime = inject('Datetime');
 const currentPage = ref(1);
 const perPage = ref(10);
+const filters = ref({
+    show: false,
+    title: '',
+    description: '',
+    userName: '',
+    userEmail: null,
+    date: [null, null],
+    priority: null,
+    status: null,
+})
 
 const paginatedTickets = computed(() => {
     let start = (currentPage.value - 1) * perPage.value;
@@ -24,10 +35,21 @@ const paginatedTickets = computed(() => {
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-6">
                 <h1 class="text-2xl font-semibold text-gray-100">Tickets</h1>
-                <a href="/tickets/create"
-                   class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Create Ticket
-                </a>
+                <div class="space-x-2">
+                    <button
+                        type="button"
+                        class="min-w-[120px] inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        @click="filters.show = true"
+                    >
+                        Filters
+                    </button>
+                    <a
+                        :href="route('tickets.create')"
+                        class="min-w-[120px] inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                        Create Ticket
+                    </a>
+                </div>
             </div>
             <div class="overflow-x-auto shadow  sm:rounded-lg">
                 <table class="min-w-full divide-y divide-gray-700">
@@ -79,6 +101,7 @@ const paginatedTickets = computed(() => {
                 />
             </div>
         </div>
+        <FiltersModal :filters="filters" />
     </AuthenticatedLayout>
 
 </template>
