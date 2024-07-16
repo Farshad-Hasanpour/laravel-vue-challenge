@@ -87,7 +87,7 @@ const paginatedTickets = computed(() => {
                 <Breadcrumb
                     :items="[
                         // Dashboard link is always shown by default
-                        {text: 'Tickets'}, // You can add a link property
+                        {text: `Tickets ${filtersCount ? `(${filteredTickets.length} of ${tickets.length})` : ''}`}, // You can add a link property
                     ]"
                 />
                 <div class="space-x-2">
