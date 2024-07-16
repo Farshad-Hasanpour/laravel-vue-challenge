@@ -13,13 +13,14 @@ const props = defineProps({
 const Datetime = inject('Datetime');
 const currentPage = ref(1);
 const perPage = ref(10);
+const showFilters = ref(false);
 const filters = ref({
-    show: false,
     title: '',
     description: '',
     userName: '',
     userEmail: null,
-    date: [null, null],
+    dateStart: null,
+    dateEnd: null,
     priority: null,
     status: null,
 })
@@ -28,6 +29,10 @@ const paginatedTickets = computed(() => {
     let start = (currentPage.value - 1) * perPage.value;
     let end = start + perPage.value;
     return props.tickets.slice(start, end);
+})
+
+const filtersCount = computed(() => {
+    return Object.values(filters.value).filter(item => !!item)?.length || 0;
 })
 </script>
 
@@ -46,9 +51,9 @@ const paginatedTickets = computed(() => {
                     <button
                         type="button"
                         class="min-w-[120px] inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        @click="filters.show = true"
+                        @click="showFilters = true"
                     >
-                        Filters
+                        Filters {{filtersCount ? `(${filtersCount})` : null}}
                     </button>
                     <Link
                         :href="route('tickets.create')"
@@ -108,7 +113,10 @@ const paginatedTickets = computed(() => {
                 />
             </div>
         </div>
-        <FiltersModal :filters="filters" />
+        <FiltersModal
+            v-model="showFilters"
+            :filters="filters"
+        />
     </AuthenticatedLayout>
 
 </template>

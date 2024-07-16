@@ -1,11 +1,15 @@
 <script setup>
 import Modal from '@/Components/Modal.vue';
 import DangerButton from '@/Components/DangerButton.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
+import Dropdown from '@/Components/Dropdown.vue';
 import { DatePicker } from 'v-calendar';
 
+const emit = defineEmits(['update:model-value']);
 const props = defineProps({
+    modelValue: { required: true, type: Boolean },
     filters: { required: true, type: Object }
 })
 
@@ -14,8 +18,8 @@ function reset(){
     props.filters.description = '';
     props.filters.userName = '';
     props.filters.userEmail = '';
-    props.filters.date[0] = null;
-    props.filters.date[1] = null;
+    props.filters.startDate = null;
+    props.filters.endDate = null;
     props.filters.priority = null;
     props.filters.status = null;
 }
@@ -23,15 +27,15 @@ function reset(){
 
 <template>
     <Modal
-        :show="filters.show"
-        @close="filters.show = false"
+        :show="modelValue"
+        @close="emit('update:model-value', false)"
     >
         <div class="p-4 flex justify-between items-center text-white">
             <div>
                 <h3 class="text-3xl">Filters</h3>
-                <span class="text-gray-300 text-md">Filter are Real time</span>
+                <span class="text-gray-300 text-md">Filter are real time</span>
             </div>
-            <button class="p-2 uppercase text-white" @click="filters.show = false">&#x2715;</button>
+            <button class="p-2 uppercase text-white" @click="emit('update:model-value', false)">&#x2715;</button>
         </div>
         <form ref="form" class="grid grid-cols-6 gap-4 p-4" @submit.prevent>
             <div class="col-span-6 md:col-span-3">
@@ -67,7 +71,7 @@ function reset(){
             <div class="col-span-6 md:col-span-3">
                 <InputLabel value="Start From" class="mb-1" />
                 <DatePicker
-                    v-model="filters.date[0]"
+                    v-model="filters.startDate"
                     mode="date"
                     :popover="{visibility: 'click'}"
                 >
@@ -84,7 +88,7 @@ function reset(){
             <div class="col-span-6 md:col-span-3">
                 <InputLabel value="Until" class="mb-1" />
                 <DatePicker
-                    v-model="filters.date[1]"
+                    v-model="filters.endDate"
                     mode="date"
                     readonly
                     :popover="{visibility: 'click'}"
@@ -98,9 +102,21 @@ function reset(){
                     </template>
                 </DatePicker>
             </div>
+            <div class="col-span-6 md:col-span-3">
+                <InputLabel value="Priority" class="mb-1" />
+
+            </div>
+            <div class="col-span-6 md:col-span-3">
+                <InputLabel value="Status" class="mb-1" />
+
+            </div>
         </form>
-        <div class="w-full flex justify-center items-center p-4">
+        <div class="w-full flex justify-center items-center p-4 space-x-2">
             <DangerButton type="button" @click="reset">Reset</DangerButton>
+            <PrimaryButton
+                type="button"
+                @click="emit('update:model-value', false)"
+            >Close</PrimaryButton>
         </div>
     </Modal>
 </template>
