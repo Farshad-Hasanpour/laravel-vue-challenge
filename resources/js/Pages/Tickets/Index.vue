@@ -92,12 +92,13 @@ const paginatedTickets = computed(() => {
 <template>
     <AuthenticatedLayout>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-6">
+            <div class="flex flex-wrap justify-between items-center py-6">
                 <Breadcrumb
                     :items="[
                         // Dashboard link is always shown by default
                         {text: `Tickets ${filtersCount ? `(${filteredTickets.length} of ${tickets.length})` : ''}`}, // You can add a link property
                     ]"
+                    class="w-full sm:w-auto my-2"
                 />
                 <div class="space-x-2">
                     <button
