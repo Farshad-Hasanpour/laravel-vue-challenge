@@ -124,6 +124,7 @@ function reset(){
                     v-model="filters.dateStart"
                     mode="date"
                     :popover="{visibility: 'click'}"
+                    :max-date="filters.dateEnd"
                 >
                     <template #default="{ inputValue, inputEvents }">
                         <TextInput
@@ -141,6 +142,7 @@ function reset(){
                     v-model="filters.dateEnd"
                     mode="date"
                     :popover="{visibility: 'click'}"
+                    :min-date="filters.dateStart"
                 >
                     <template #default="{ inputValue, inputEvents }">
                         <TextInput
