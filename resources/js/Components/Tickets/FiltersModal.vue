@@ -26,7 +26,6 @@ function reset(){
         :show="filters.show"
         @close="filters.show = false"
     >
-        <pre class="text-white">{{filters}}</pre>
         <div class="p-4 flex justify-between items-center text-white">
             <div>
                 <h3 class="text-3xl">Filters</h3>
