@@ -10,6 +10,20 @@ const props = defineProps({
     tickets: Array,
 })
 
+const allPriorities = [
+    {value: null, title: 'Empty'},
+    {value: 'low', title: 'Low'},
+    {value: 'medium', title: 'Medium'},
+    {value: 'high', title: 'High'},
+]
+
+const allStatus = [
+    {value: null, title: 'Empty'},
+    {value: 'open', title: 'Open'},
+    {value: 'in_progress', title: 'In Progress'},
+    {value: 'closed', title: 'Closed'},
+]
+
 const Datetime = inject('Datetime');
 const currentPage = ref(1);
 const perPage = ref(10);
@@ -116,6 +130,8 @@ const filtersCount = computed(() => {
         <FiltersModal
             v-model="showFilters"
             :filters="filters"
+            :all-priorities="allPriorities"
+            :all-status="allStatus"
         />
     </AuthenticatedLayout>
 

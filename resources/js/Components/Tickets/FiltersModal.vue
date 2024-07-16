@@ -5,28 +5,15 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
 import { DatePicker } from 'v-calendar';
 
 const emit = defineEmits(['update:model-value']);
 const props = defineProps({
     modelValue: { required: true, type: Boolean },
-    filters: { required: true, type: Object }
+    filters: { required: true, type: Object },
+    allPriorities: { required: true, type: Array },
+    allStatus: { required: true, type: Array },
 })
-
-const allPriorities = [
-    {value: null, title: 'Empty'},
-    {value: 'low', title: 'Low'},
-    {value: 'medium', title: 'Medium'},
-    {value: 'high', title: 'High'},
-]
-
-const allStatus = [
-    {value: null, title: 'Empty'},
-    {value: 'open', title: 'Open'},
-    {value: 'in_progress', title: 'In Progress'},
-    {value: 'closed', title: 'Closed'},
-]
 
 function reset(){
     props.filters.title = '';
