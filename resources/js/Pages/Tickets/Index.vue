@@ -54,7 +54,6 @@ const paginatedTickets = computed(() => {
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                             Actions
                         </th>
-
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-700">
@@ -74,10 +73,9 @@ const paginatedTickets = computed(() => {
                     </tbody>
                 </table>
                 <Pagination
+                    v-model:current-page="currentPage"
                     :total-items="tickets.length"
-                    :current-page.sync="currentPage"
                     :per-page="perPage"
-                    @update:currentPage="currentPage = $event"
                 />
             </div>
         </div>
