@@ -143,7 +143,7 @@ const paginatedTickets = computed(() => {
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-700">
-                    <tr v-for="ticket in filteredTickets" :key="ticket.id">
+                    <tr v-for="ticket in paginatedTickets" :key="ticket.id">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ ticket.id }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ Datetime && new Datetime(ticket.created_at) }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-100">{{ ticket.title }}</td>
