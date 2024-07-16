@@ -46,27 +46,29 @@ const filtersCount = computed(() => {
 const filteredTickets = computed(() => {
     if(!filtersCount.value) return props.tickets;
     return props.tickets.filter(item => {
-        // state search
-        if(item.priority === filters.value.priority) return true;
-        if(item.status === filters.value.status) return true;
-        // String search
-        if(filters.value.title && item.title.includes(filters.value.title)) return true;
-        if(filters.value.description && item.description.includes(filters.value.description)) return true;
-        if(filters.value.userName && item.user.name.includes(filters.value.userName)) return true;
-        if(filters.value.userEmail && item.user.email.includes(filters.value.userEmail)) return true;
+        if(
+            item.priority === filters.value.priority ||
+            item.status === filters.value.status ||
+            (filters.value.title && item.title.includes(filters.value.title)) ||
+            (filters.value.description && item.description.includes(filters.value.description)) ||
+            (filters.value.userName && item.user.name.includes(filters.value.userName)) ||
+            (filters.value.userEmail && item.user.email.includes(filters.value.userEmail))
+        ) return true
 
-        // Date search
+        // Date range search
         const updated = new Date(item.updated_at);
         updated.setHours(0, 0, 0, 0);
+
         if(filters.value.dateStart){
             const start = new Date(filters.value.dateStart);
             start.setHours(0, 0, 0, 0);
-            if(start <= updated) return true;
+            if(start.getTime() <= updated.getTime()) return true;
         }
+
         if(filters.value.dateEnd){
             const end = new Date(filters.value.dateEnd);
             end.setHours(24, 0, 0, 0);
-            if(end > updated) return true;
+            if(end.getTime() > updated.getTime()) return true;
         }
 
         return false;
