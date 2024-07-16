@@ -13,7 +13,7 @@ const totalPages = computed(() => {
     return Math.ceil(props.totalItems / props.perPage);
 });
 watch(totalPages, (newVal, oldVal) => {
-    if(newVal < oldVal && props.currentPage > newVal){
+    if(newVal < oldVal && newVal && props.currentPage > newVal){
         goToPage(newVal)
     }
 })
