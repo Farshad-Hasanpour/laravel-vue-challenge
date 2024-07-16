@@ -60,22 +60,25 @@ const filteredTickets = computed(() => {
         ) return true
 
         // Date range search
+        let start = null;
+        let end = null;
         const updated = new Date(item.updated_at);
         updated.setHours(0, 0, 0, 0);
 
         if(filters.value.dateStart){
-            const start = new Date(filters.value.dateStart);
+            start = new Date(filters.value.dateStart);
             start.setHours(0, 0, 0, 0);
-            if(start.getTime() <= updated.getTime()) return true;
         }
-
         if(filters.value.dateEnd){
-            const end = new Date(filters.value.dateEnd);
+            end = new Date(filters.value.dateEnd);
             end.setHours(24, 0, 0, 0);
-            if(end.getTime() > updated.getTime()) return true;
         }
 
-        return false;
+        return Boolean(
+            (start && !end && start.getTime() <= updated.getTime()) ||
+            (end && !start && end.getTime() > updated.getTime()) ||
+            (start && end && start.getTime() <= updated.getTime() && end.getTime() > updated.getTime())
+        );
     });
 })
 
