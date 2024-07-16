@@ -20,10 +20,10 @@ function reset(){
     props.filters.description = '';
     props.filters.userName = '';
     props.filters.userEmail = '';
-    props.filters.startDate = null;
-    props.filters.endDate = null;
     props.filters.priority = null;
     props.filters.status = null;
+    props.filters.dateStart = null;
+    props.filters.dateEnd = null;
 }
 </script>
 
@@ -121,16 +121,16 @@ function reset(){
             <div class="col-span-6 md:col-span-3">
                 <InputLabel value="Start From" class="mb-1" />
                 <DatePicker
-                    v-model="filters.startDate"
+                    v-model="filters.dateStart"
                     mode="date"
                     :popover="{visibility: 'click'}"
                 >
                     <template #default="{ inputValue, inputEvents }">
                         <TextInput
                             :model-value="inputValue || ''"
-                            v-on="inputEvents"
                             readonly
                             class="w-full"
+                            v-on="inputEvents"
                         />
                     </template>
                 </DatePicker>
@@ -138,16 +138,16 @@ function reset(){
             <div class="col-span-6 md:col-span-3">
                 <InputLabel value="Until" class="mb-1" />
                 <DatePicker
-                    v-model="filters.endDate"
+                    v-model="filters.dateEnd"
                     mode="date"
-                    readonly
                     :popover="{visibility: 'click'}"
                 >
                     <template #default="{ inputValue, inputEvents }">
                         <TextInput
                             :model-value="inputValue || ''"
-                            v-on="inputEvents"
+                            readonly
                             class="w-full"
+                            v-on="inputEvents"
                         />
                     </template>
                 </DatePicker>

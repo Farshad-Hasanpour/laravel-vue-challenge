@@ -33,27 +33,56 @@ const filters = ref({
     description: '',
     userName: '',
     userEmail: '',
-    dateStart: null,
-    dateEnd: null,
     priority: null,
     status: null,
+    dateStart: null,
+    dateEnd: null,
+})
+
+const filtersCount = computed(() => {
+    return Object.values(filters.value).filter(item => !!item)?.length || 0;
+})
+
+const filteredTickets = computed(() => {
+    if(!filtersCount.value) return props.tickets;
+    return props.tickets.filter(item => {
+        // state search
+        if(item.priority === filters.value.priority) return true;
+        if(item.status === filters.value.status) return true;
+        // String search
+        if(filters.value.title && item.title.includes(filters.value.title)) return true;
+        if(filters.value.description && item.description.includes(filters.value.description)) return true;
+        if(filters.value.userName && item.user.name.includes(filters.value.userName)) return true;
+        if(filters.value.userEmail && item.user.email.includes(filters.value.userEmail)) return true;
+
+        // Date search
+        const updated = new Date(item.updated_at);
+        updated.setHours(0, 0, 0, 0);
+        if(filters.value.dateStart){
+            const start = new Date(filters.value.dateStart);
+            start.setHours(0, 0, 0, 0);
+            if(start <= updated) return true;
+        }
+        if(filters.value.dateEnd){
+            const end = new Date(filters.value.dateEnd);
+            end.setHours(24, 0, 0, 0);
+            if(end > updated) return true;
+        }
+
+        return false;
+    });
 })
 
 const paginatedTickets = computed(() => {
     let start = (currentPage.value - 1) * perPage.value;
     let end = start + perPage.value;
-    return props.tickets.slice(start, end);
-})
-
-const filtersCount = computed(() => {
-    return Object.values(filters.value).filter(item => !!item)?.length || 0;
+    return filteredTickets.value.slice(start, end);
 })
 </script>
 
 <template>
     <AuthenticatedLayout>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
             <div class="flex justify-between items-center py-6">
                 <Breadcrumb
                     :items="[
@@ -105,7 +134,7 @@ const filtersCount = computed(() => {
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-700">
-                    <tr v-for="ticket in paginatedTickets" :key="ticket.id">
+                    <tr v-for="ticket in filteredTickets" :key="ticket.id">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ ticket.id }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ Datetime && new Datetime(ticket.created_at) }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-100">{{ ticket.title }}</td>
@@ -122,7 +151,7 @@ const filtersCount = computed(() => {
                 </table>
                 <Pagination
                     v-model:current-page="currentPage"
-                    :total-items="tickets.length"
+                    :total-items="filteredTickets.length"
                     :per-page="perPage"
                 />
             </div>
