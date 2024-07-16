@@ -1,6 +1,6 @@
 <script setup>
 import Pagination from '@/Components/Pagination.vue'
-import {computed, ref} from "vue";
+import {computed, ref, inject} from "vue";
 import { Link } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
@@ -8,6 +8,7 @@ const props = defineProps({
     tickets: Array,
 })
 
+const Datetime = inject('Datetime');
 const currentPage = ref(1);
 const perPage = ref(10);
 
@@ -51,7 +52,7 @@ const paginatedTickets = computed(() => {
                             Status
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            &nbsp;
+                            Actions
                         </th>
 
                     </tr>
@@ -59,7 +60,7 @@ const paginatedTickets = computed(() => {
                     <tbody class="divide-y divide-gray-700">
                     <tr v-for="ticket in paginatedTickets" :key="ticket.id">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ ticket.id }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ ticket.created_at }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ Datetime && new Datetime(ticket.created_at) }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-100">{{ ticket.title }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ ticket.user.name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ ticket.priority }}</td>
