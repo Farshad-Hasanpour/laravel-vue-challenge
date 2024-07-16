@@ -32,13 +32,44 @@ function reset(){
             </div>
             <button class="p-2 uppercase text-white" @click="filters.show = false">&#x2715;</button>
         </div>
-        <form ref="form" class="grid grid-cols-6 gap-2 p-4" @submit.prevent>
-            <div class="col-span-6 md:col-span-2">
+        <form ref="form" class="grid grid-cols-6 gap-4 p-4" @submit.prevent>
+            <div class="col-span-6 md:col-span-3">
                 <InputLabel value="Title" class="mb-1" />
                 <TextInput
                     v-model="filters.title"
                     class="w-full"
                 />
+            </div>
+            <div class="col-span-6 md:col-span-3">
+                <InputLabel value="Content" class="mb-1" />
+                <TextInput
+                    v-model="filters.content"
+                    class="w-full"
+                />
+            </div>
+            <div class="col-span-6 md:col-span-3">
+                <InputLabel value="Username" class="mb-1" />
+                <TextInput
+                    v-model="filters.userName"
+                    class="w-full"
+                />
+            </div>
+            <div class="col-span-6 md:col-span-3">
+                <InputLabel value="User Email" class="mb-1" />
+                <TextInput
+                    v-model="filters.userEmail"
+                    type="email"
+                    inputmode="email"
+                    class="w-full"
+                />
+            </div>
+            <div class="col-span-6 md:col-span-3">
+                <InputLabel value="Start From" class="mb-1" />
+
+            </div>
+            <div class="col-span-6 md:col-span-3">
+                <InputLabel value="Until" class="mb-1" />
+
             </div>
         </form>
         <div class="w-full flex justify-center items-center p-4">
