@@ -18,6 +18,16 @@ createInertiaApp({
 
         // Note: Globals here
         app.provide('Datetime', Datetime)
+        app.provide('ticketPriorities', {
+            low: 'Low',
+            medium: 'Medium',
+            high: 'High',
+        })
+        app.provide('ticketStatuses', {
+            open: 'Open',
+            in_progress: 'In Progress',
+            closed: 'Closed',
+        })
 
         app
             .use(plugin)
