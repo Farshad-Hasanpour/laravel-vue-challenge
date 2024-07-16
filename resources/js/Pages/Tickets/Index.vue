@@ -4,7 +4,7 @@ import { Link } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Pagination from '@/Components/Pagination.vue'
 import Breadcrumb from '@/Components/Breadcrumb.vue';
-const FiltersModal = defineAsyncComponent(() => import("@/Components/tickets/FiltersModal.vue"));
+const FiltersModal = defineAsyncComponent(() => import("@/Components/Tickets/FiltersModal.vue"));
 
 const props = defineProps({
     tickets: Array,
