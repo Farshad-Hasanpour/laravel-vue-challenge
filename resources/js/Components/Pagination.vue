@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 
 const props = defineProps({
     totalItems: Number,
@@ -12,6 +12,11 @@ const emits = defineEmits(['update:currentPage']);
 const totalPages = computed(() => {
     return Math.ceil(props.totalItems / props.perPage);
 });
+watch(totalPages, (newVal, oldVal) => {
+    if(newVal < oldVal && props.currentPage > newVal){
+        goToPage(newVal)
+    }
+})
 
 function goToPage(page) {
     emits('update:currentPage', page);
