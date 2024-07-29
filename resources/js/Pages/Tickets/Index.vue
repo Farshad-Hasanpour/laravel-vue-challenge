@@ -166,7 +166,7 @@ const paginatedTickets = computed(() => {
                     </tr>
                     </tbody>
                 </table>
-                <Pagination :items="tickets" />
+                <Pagination :items="tickets" :filters="filters" />
             </div>
         </div>
         <FiltersModal
