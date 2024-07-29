@@ -7,7 +7,8 @@ import Breadcrumb from '@/Components/Breadcrumb.vue';
 const FiltersModal = defineAsyncComponent(() => import("@/Components/Tickets/FiltersModal.vue"));
 
 const props = defineProps({
-    tickets: Array,
+    tickets: Object,
+    totalWithoutFilter: Number,
 })
 
 const priorities = inject('ticketPriorities');
@@ -32,24 +33,27 @@ const Datetime = inject('Datetime');
 const currentPage = ref(1);
 const perPage = ref(10);
 const showFilters = ref(false);
+
+const params = Object.fromEntries(new URLSearchParams(window.location.search));
+
 const filters = ref({
-    title: '',
-    description: '',
-    userName: '',
-    userEmail: '',
-    priority: null,
-    status: null,
-    dateStart: null,
-    dateEnd: null,
+    title: params.title || '',
+    description: params.description || '',
+    userName: params.userName || '',
+    userEmail: params.userEmail || '',
+    priority: params.priority || null,
+    status: params.status || null,
+    dateStart: params.dateStart || null,
+    dateEnd: params.dateEnd || null,
 })
 
 const filtersCount = computed(() => {
     return Object.values(filters.value).filter(item => !!item)?.length || 0;
 })
 
-const filteredTickets = computed(() => {
-    if(!filtersCount.value) return props.tickets;
-    return props.tickets.filter(item => {
+/* const filteredTickets = computed(() => {
+    if(!filtersCount.value) return props.tickets.data;
+    return props.tickets.data.filter(item => {
         if(
             item.priority === filters.value.priority ||
             item.status === filters.value.status ||
@@ -86,7 +90,7 @@ const paginatedTickets = computed(() => {
     let start = (currentPage.value - 1) * perPage.value;
     let end = start + perPage.value;
     return filteredTickets.value.slice(start, end);
-})
+})*/
 </script>
 
 <template>
@@ -96,7 +100,7 @@ const paginatedTickets = computed(() => {
                 <Breadcrumb
                     :items="[
                         // Dashboard link is always shown by default
-                        {text: `Tickets ${filtersCount ? `(${filteredTickets.length} of ${tickets.length})` : ''}`}, // You can add a link property
+                        {text: `Tickets ${filtersCount ? `(${tickets.total} of ${totalWithoutFilter})` : ''}`}, // You can add a link property
                     ]"
                     class="w-full sm:w-auto my-2"
                 />
@@ -144,7 +148,10 @@ const paginatedTickets = computed(() => {
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-700">
-                    <tr v-for="ticket in paginatedTickets" :key="ticket.id">
+                    <tr v-if="!tickets.data.length" class="text-gray-400">
+                        <td colspan="7" class="text-lg text-center p-2">No Records Found</td>
+                    </tr>
+                    <tr v-for="ticket in tickets.data" :key="ticket.id">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ ticket.id }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{ Datetime && new Datetime(ticket.created_at) }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-100">{{ ticket.title }}</td>
@@ -159,11 +166,7 @@ const paginatedTickets = computed(() => {
                     </tr>
                     </tbody>
                 </table>
-                <Pagination
-                    v-model:current-page="currentPage"
-                    :total-items="filteredTickets.length"
-                    :per-page="perPage"
-                />
+                <Pagination :items="tickets" />
             </div>
         </div>
         <FiltersModal
@@ -171,6 +174,7 @@ const paginatedTickets = computed(() => {
             :filters="filters"
             :all-priorities="allPriorities"
             :all-status="allStatus"
+            :current-page="tickets.current_page"
         />
     </AuthenticatedLayout>
 

@@ -1,7 +1,9 @@
 <script setup>
 import Modal from '@/Components/Modal.vue';
+import {Link} from "@inertiajs/vue3";
 import DangerButton from '@/Components/DangerButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import Dropdown from '@/Components/Dropdown.vue';
@@ -11,20 +13,10 @@ const emit = defineEmits(['update:model-value']);
 const props = defineProps({
     modelValue: { required: true, type: Boolean },
     filters: { required: true, type: Object },
+    currentPage: { required: true, type: Number},
     allPriorities: { required: true, type: Array },
     allStatus: { required: true, type: Array },
 })
-
-function reset(){
-    props.filters.title = '';
-    props.filters.description = '';
-    props.filters.userName = '';
-    props.filters.userEmail = '';
-    props.filters.priority = null;
-    props.filters.status = null;
-    props.filters.dateStart = null;
-    props.filters.dateEnd = null;
-}
 </script>
 
 <template>
@@ -35,7 +27,7 @@ function reset(){
         <div class="p-4 flex justify-between items-center text-white">
             <div>
                 <h3 class="text-3xl">Filters</h3>
-                <span class="text-gray-300 text-md">Filter are real time</span>
+                <span class="text-gray-300 text-md">values are evaluated using "OR" logic</span>
             </div>
             <button class="p-2 uppercase text-white" @click="emit('update:model-value', false)">&#x2715;</button>
         </div>
@@ -156,11 +148,28 @@ function reset(){
             </div>
         </form>
         <div class="w-full flex justify-center items-center p-4 space-x-2">
-            <DangerButton type="button" @click="reset">Reset</DangerButton>
-            <PrimaryButton
+            <Link
+                :href="route('tickets.index', {
+                    ...Object.fromEntries(
+                        Object.entries(filters)
+                        .filter(([_, value]) => value)
+                    ),
+                    page: currentPage
+                })"
+            >
+                <PrimaryButton type="button">
+                    Filter
+                </PrimaryButton>
+            </Link>
+            <Link :href="route('tickets.index', {page: currentPage})">
+                <DangerButton type="button">
+                    Reset
+                </DangerButton>
+            </Link>
+            <SecondaryButton
                 type="button"
                 @click="emit('update:model-value', false)"
-            >Close</PrimaryButton>
+            >Close</SecondaryButton>
         </div>
     </Modal>
 </template>
@@ -169,4 +178,6 @@ function reset(){
 @import 'v-calendar/dist/style.css';
 </style>
 
-<style scoped></style>
+<style scoped>
+
+</style>
