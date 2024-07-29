@@ -153,8 +153,7 @@ const props = defineProps({
                     ...Object.fromEntries(
                         Object.entries(filters)
                         .filter(([_, value]) => value)
-                    ),
-                    page: currentPage
+                    )
                 })"
             >
                 <PrimaryButton type="button">
